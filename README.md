@@ -1,7 +1,7 @@
 # customer-review-extractor
 # AI Customer Review & Complaint Extractor
 
-**[Click Here to Try the Live App]((https://customer-review-extractor-fhqsvrwg7i3bappqbyqo5hc.streamlit.app))**
+**[🚀 Click Here to Try the Live App](https://customer-review-extractor-fhqsvrwg7i3bappqbyqo5hc.streamlit.app)**
 
 An automated Business Intelligence (BI) web application that turns raw customer review spreadsheets into actionable product and support insights. Built with **Python**, **Streamlit**, **Plotly**, and **Hugging Face Transformers**.
 
