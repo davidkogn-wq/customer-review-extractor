@@ -17,10 +17,10 @@ def load_models():
         "sentiment-analysis",
         model="distilbert-base-uncased-finetuned-sst-2-english"
     )
-    # Lightweight zero-shot model (~260MB) for custom business topics
+    # Upgraded DeBERTa-v3 zero-shot model for sharper topic accuracy
     topic_pipe = pipeline(
         "zero-shot-classification",
-        model="typeform/distilbert-base-uncased-mnli"
+        model="MoritzLaurer/DeBERTa-v3-small-mnli-fever-anli"
     )
     return sentiment_pipe, topic_pipe
 
@@ -44,7 +44,7 @@ def get_sample_data():
 
 # 4. Sidebar Controls & Custom Categories
 st.sidebar.header("⚙️ Configuration")
-default_topics = "Defective Battery, Sizing Issue, Shipping Delay, Customer Service, Build Quality"
+default_topics = "Defective Battery, Sizing Issue, Shipping Delay, Customer Service, Hardware / Build Quality"
 custom_topics_input = st.sidebar.text_area(
     "Complaint Categories (comma-separated):",
     value=default_topics,
@@ -112,7 +112,7 @@ if "df" in st.session_state:
                 topics.append("N/A (Positive)")
         df["Primary_Topic"] = topics
 
-    # KPI Metrics Row
+    # --- KPI Metrics Row ---
     total_reviews = len(df)
     neg_df = df[df["Sentiment"] == "Negative"]
     neg_count = len(neg_df)
@@ -125,7 +125,7 @@ if "df" in st.session_state:
 
     st.divider()
 
-    # Charts Row
+    # --- Charts Row ---
     c1, c2 = st.columns(2)
 
     with c1:
@@ -149,18 +149,21 @@ if "df" in st.session_state:
                 x="Count",
                 y="Topic",
                 orientation="h",
-                color="Count",
-                color_continuous_scale="Reds"
+                text="Count",
+                color_discrete_sequence=["#e74c3c"]
             )
-            fig_topics.update_layout(yaxis={'categoryorder':'total ascending'})
+            fig_topics.update_layout(
+                yaxis={'categoryorder': 'total ascending'},
+                xaxis=dict(dtick=1)
+            )
             st.plotly_chart(fig_topics, use_container_width=True)
         else:
             st.info("No negative reviews found to categorize!")
 
     st.divider()
-    
-    # Urgent Triage Table
-    st.subheader("Urgent Triage: Angriest Reviews Needing Immediate Reply")
+
+    # --- Urgent Triage Table ---
+    st.subheader("🚨 Urgent Triage: Angriest Reviews Needing Immediate Reply")
     if neg_count > 0:
         # Sort by most negative score first (-0.9999 is angriest)
         urgent_df = neg_df.sort_values(by="Sentiment_Score", ascending=True)
