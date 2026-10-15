@@ -17,10 +17,10 @@ def load_models():
         "sentiment-analysis",
         model="distilbert-base-uncased-finetuned-sst-2-english"
     )
-    # Upgraded DeBERTa-v3 zero-shot model for sharper topic accuracy
+    # Upgraded DistilBART zero-shot model for accurate topic classification
     topic_pipe = pipeline(
         "zero-shot-classification",
-        model="MoritzLaurer/DeBERTa-v3-small-mnli-fever-anli"
+        model="valhalla/distilbart-mnli-12-3"
     )
     return sentiment_pipe, topic_pipe
 
@@ -44,7 +44,7 @@ def get_sample_data():
 
 # 4. Sidebar Controls & Custom Categories
 st.sidebar.header("⚙️ Configuration")
-default_topics = "Defective Battery, Sizing Issue, Shipping Delay, Customer Service, Hardware / Build Quality"
+default_topics = "Defective Battery, Sizing Issue, Shipping Delay, Customer Service, Broken Hardware / Screen"
 custom_topics_input = st.sidebar.text_area(
     "Complaint Categories (comma-separated):",
     value=default_topics,
