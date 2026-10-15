@@ -112,7 +112,7 @@ if "df" in st.session_state:
                 topics.append("N/A (Positive)")
         df["Primary_Topic"] = topics
 
-    # --- KPI Metrics Row ---
+    # KPI Metrics Row
     total_reviews = len(df)
     neg_df = df[df["Sentiment"] == "Negative"]
     neg_count = len(neg_df)
@@ -125,7 +125,7 @@ if "df" in st.session_state:
 
     st.divider()
 
-    # --- Charts Row ---
+    # Charts Row
     c1, c2 = st.columns(2)
 
     with c1:
@@ -158,9 +158,9 @@ if "df" in st.session_state:
             st.info("No negative reviews found to categorize!")
 
     st.divider()
-
-    # --- Urgent Triage Table ---
-    st.subheader("🚨 Urgent Triage: Angriest Reviews Needing Immediate Reply")
+    
+    # Urgent Triage Table
+    st.subheader("Urgent Triage: Angriest Reviews Needing Immediate Reply")
     if neg_count > 0:
         # Sort by most negative score first (-0.9999 is angriest)
         urgent_df = neg_df.sort_values(by="Sentiment_Score", ascending=True)
